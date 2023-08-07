@@ -670,9 +670,10 @@ func (s *state) tableAttr(b *sqlx.Builder, c schema.Change, attrs ...schema.Attr
 			b.P(a.V)
 		case *AutoIncrement:
 			// Update the AUTO_INCREMENT if it is a table modification, or it is not the default.
-			if _, ok := c.(*schema.ModifyAttr); ok || a.V > 1 {
-				b.P("AUTO_INCREMENT", strconv.FormatInt(a.V, 10))
-			}
+			// shunf4 mod: Never update/add AUTO_INCREMENT.
+			// if _, ok := c.(*schema.ModifyAttr); ok || a.V > 1 {
+			// 	b.P("AUTO_INCREMENT", strconv.FormatInt(a.V, 10))
+			// }
 		case *Engine:
 			// Update the ENGINE if it is a table modification, or it is not the default.
 			if _, ok := c.(*schema.ModifyAttr); ok || !a.Default {
